@@ -1,15 +1,16 @@
 // frontend/src/App.js
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode'; // ✅ Importación correcta
+import { jwtDecode } from 'jwt-decode'; // ✅ named import corregido
 
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 import AdminDashboard from './components/AdminDashboard';
-import ArtistaDashboard from './components/ArtistaDashboard';
+import ArtistaDashboard from './components/artist/ArtistaDashboard';
 import UsuarioDashboard from './components/UsuarioDashboard';
+import Navbar from './components/Navbar';
 
 function App() {
   // 🔹 Obtener el rol del usuario desde cookie o localStorage
@@ -63,22 +64,8 @@ function App() {
           backgroundColor: '#f7f9fb',
         }}
       >
-        {/* 🔹 Navbar */}
-        <nav
-          style={{
-            padding: '15px',
-            background: '#2c3e50',
-            color: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '20px',
-          }}
-        >
-          <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Inicio</Link>
-          <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Registro</Link>
-          <Link to="/login" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
-          <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</Link>
-        </nav>
+        {/* 🔹 Navbar importado */}
+        <Navbar />
 
         {/* 🔹 Rutas */}
         <Routes>

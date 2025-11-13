@@ -1,0 +1,27 @@
+.form-song {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-song input,
+.form-song textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.form-song button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2980b9;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.form-song button:hover {
+  background-color: #1f6391;
+}

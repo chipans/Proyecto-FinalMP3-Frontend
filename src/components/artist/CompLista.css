@@ -1,0 +1,46 @@
+.song-list {
+  background-color: #34495e;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.song-list h2 {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.song-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.song-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  padding: 8px 12px;
+  border-bottom: 1px solid #2c3e50;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.song-list li:hover {
+  background-color: #2c3e50;
+}
+
+.song-list .btn-play {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #2980b9;
+  color: white;
+  transition: background 0.3s;
+}
+
+.song-list .btn-play:hover {
+  background-color: #1f6391;
+}

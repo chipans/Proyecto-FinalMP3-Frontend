@@ -1,0 +1,13 @@
+.reproductor {
+  margin-top: 15px;
+}
+
+.player-controls button {
+  margin-right: 5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+}
