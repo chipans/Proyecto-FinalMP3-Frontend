@@ -1,43 +1,62 @@
 // frontend/src/components/LoginForm.js
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
-  withCredentials: true, // Para cookies de sesión futuras
-});
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../api'; // Axios con withCredentials: true
+import { jwtDecode } from 'jwt-decode'; // ✅ Import corregido
+import Cookies from 'js-cookie'; // npm install js-cookie
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  // Manejar cambios de campos
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
-
+  // Enviar formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
+    setMessage('');
 
     try {
       const response = await api.post('/login', formData);
-      const { token } = response.data; 
-      localStorage.setItem('token', token); // Guardamos el token localmente
-      navigate('/dashboard'); // Redirige al dashboard
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
-        setError('El usuario o la contraseña son inválidos.');
+
+      // 🔹 Guardar token completo en localStorage
+      const token = response.data.token;
+      if (!token) throw new Error('Token no recibido del servidor.');
+      localStorage.setItem('token', token);
+
+      // 🔹 Guardar token en cookie llamada "session"
+      Cookies.set('session', token, { expires: 1, path: '/' });
+
+      // 🔹 Decodificar token para obtener rol
+      const decoded = jwtDecode(token);
+      const userRole = decoded.role || 'usuario';
+      localStorage.setItem('userRole', userRole);
+
+      // 🔹 Redirección según rol
+      switch (userRole) {
+        case 'admin':
+          navigate('/dashboard/admin');
+          break;
+        case 'artista':
+          navigate('/dashboard/artista');
+          break;
+        default:
+          navigate('/dashboard/usuario');
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+      if (error.response?.status === 401) {
+        setMessage('Credenciales incorrectas. Inténtalo nuevamente.');
       } else {
-        setError('Error de conexión o del servidor.');
+        setMessage('Error en el servidor. Inténtalo más tarde.');
       }
     } finally {
       setLoading(false);
@@ -66,16 +85,38 @@ const LoginForm = () => {
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
         }}
       >
-        <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#333' }}>
+        <h2
+          style={{
+            textAlign: 'center',
+            marginBottom: '20px',
+            color: '#333',
+          }}
+        >
           Iniciar Sesión
         </h2>
 
         <form
           onSubmit={handleSubmit}
-          style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '15px',
+          }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label htmlFor="username" style={{ marginBottom: '5px', fontWeight: 'bold' }}>
+          {/* Usuario */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <label
+              htmlFor="username"
+              style={{
+                marginBottom: '5px',
+                fontWeight: 'bold',
+              }}
+            >
               Usuario:
             </label>
             <input
@@ -95,12 +136,24 @@ const LoginForm = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
-            <label htmlFor="password" style={{ marginBottom: '5px', fontWeight: 'bold' }}>
+          {/* Contraseña */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <label
+              htmlFor="password"
+              style={{
+                marginBottom: '5px',
+                fontWeight: 'bold',
+              }}
+            >
               Contraseña:
             </label>
             <input
-              type={showPassword ? 'text' : 'password'}
+              type="password"
               id="password"
               name="password"
               value={formData.password}
@@ -114,24 +167,9 @@ const LoginForm = () => {
                 fontSize: '14px',
               }}
             />
-            <button
-              type="button"
-              onClick={togglePassword}
-              style={{
-                position: 'absolute',
-                right: '10px',
-                top: '35px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '12px',
-                color: '#2980b9',
-              }}
-            >
-              {showPassword ? 'Ocultar' : 'Mostrar'}
-            </button>
           </div>
 
+          {/* Botón */}
           <button
             type="submit"
             disabled={loading}
@@ -150,16 +188,17 @@ const LoginForm = () => {
           </button>
         </form>
 
-        {error && (
+        {/* Mensaje */}
+        {message && (
           <p
             style={{
-              color: 'red',
+              color: message.toLowerCase().includes('error') ? 'red' : 'green',
               marginTop: '15px',
               textAlign: 'center',
               fontWeight: 'bold',
             }}
           >
-            {error}
+            {message}
           </p>
         )}
       </div>
