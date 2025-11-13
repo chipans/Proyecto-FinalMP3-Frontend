@@ -1,0 +1,57 @@
+.buscador-canciones {
+  display: flex;
+  justify-content: flex-start; /* alineado a la izquierda */
+  align-items: center;
+  gap: 5px; /* espacio entre botón e input */
+  width: fit-content; /* ocupa solo lo necesario */
+  margin: 20px 0;
+}
+
+/* Botón primero a la izquierda */
+.buscador-canciones button {
+  padding: 8px 14px;
+  border: none;
+  background-color: #2196f3;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.buscador-canciones button:hover {
+  background-color: #1e88e5;
+}
+
+/* Input a la derecha del botón */
+.buscador-canciones input {
+  width: 200px; /* tamaño compacto */
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+  outline: none;
+  font-size: 14px;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.buscador-canciones input:focus {
+  border-color: #2196f3;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+}
+
+/* Responsive para móvil */
+@media (max-width: 500px) {
+  .buscador-canciones {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+  }
+
+  .buscador-canciones input,
+  .buscador-canciones button {
+    width: 100%;
+    border-radius: 25px;
+  }
+}

@@ -1,0 +1,47 @@
+.dashboard-usuario {
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Encabezado con título a la izquierda y botón a la derecha */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Título del dashboard */
+.dashboard-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+  flex: 0 1 auto; /* ocupa solo lo necesario */
+}
+
+/* Botón de cerrar sesión alineado a la derecha y tamaño natural */
+.btn-cerrar-sesion {
+  padding: 8px 16px;
+  border: none;
+  background-color: #f44336; /* rojo */
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+  margin-left: auto; /* fuerza al botón a la derecha */
+  width: auto; /* solo el ancho necesario */
+}
+
+.btn-cerrar-sesion:hover {
+  background-color: #e53935;
+}
+
+/* Subtítulos de secciones */
+.dashboard-usuario h3 {
+  margin-top: 30px;
+  color: #555;
+}

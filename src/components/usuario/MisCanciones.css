@@ -1,0 +1,81 @@
+.mis-canciones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.cancion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: 0.2s;
+}
+
+.cancion-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.cancion-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1;
+  margin-left: 15px;
+  text-align: left;
+}
+
+.info h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.info p {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.btn-reproducir {
+  background-color: #4caf50;
+  color: white;
+}
+
+.btn-eliminar {
+  background-color: #f44336;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.sin-canciones {
+  color: #888;
+  font-style: italic;
+  margin-top: 10px;
+}

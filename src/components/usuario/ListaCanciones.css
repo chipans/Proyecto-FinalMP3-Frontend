@@ -1,0 +1,113 @@
+/* src/components/usuario/ListaCanciones.css */
+
+/* Contenedor principal de la lista: ahora es un grid */
+.lista-canciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+/* Contenedor de cada canción (card) */
+.cancion-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+}
+
+.cancion-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Imagen de la canción */
+.imagen-cancion {
+  width: 100%;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+/* Información de la canción */
+.info-cancion {
+  margin-bottom: 10px;
+}
+
+.titulo-cancion {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.artista-cancion {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: #777;
+}
+
+/* Botones de acción */
+.acciones-cancion {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+/* Estilos generales de botones */
+button {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+}
+
+/* Botón reproducir */
+.btn-reproducir {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.btn-reproducir:hover {
+  background-color: #45a049;
+}
+
+/* Botón añadir */
+.btn-agregar {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.btn-agregar:hover {
+  background-color: #1e88e5;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.btn-eliminar:hover {
+  background-color: #e53935;
+}
+
+/* Mensaje de sin canciones */
+.sin-canciones {
+  color: #888;
+  font-style: italic;
+  margin-top: 10px;
+  text-align: center;
+}

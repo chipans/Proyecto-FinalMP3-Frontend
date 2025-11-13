@@ -3,16 +3,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode'; // ✅ named import corregido
+import { jwtDecode } from 'jwt-decode';
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
-import RegisterForm from './components/RegisterForm';
-import LoginForm from './components/LoginForm';
+// 🔹 Dashboards
 import AdminDashboard from './components/AdminDashboard';
 import ArtistaDashboard from './components/artist/ArtistaDashboard';
-import UsuarioDashboard from './components/UsuarioDashboard';
+import DashboardUsuario from "./components/usuario/DashboardUsuario"; // ✅ NUEVO DASHBOARD FRONTEND
+
+// 🔹 Formularios y Navbar
+import RegisterForm from './components/RegisterForm';
+import LoginForm from './components/LoginForm';
 import Navbar from './components/Navbar';
 
 function App() {
+
   // 🔹 Obtener el rol del usuario desde cookie o localStorage
   const getUserRole = () => {
     try {
@@ -20,7 +26,7 @@ function App() {
       if (!token) token = localStorage.getItem('token');
       if (!token) return null;
 
-      const decoded = jwtDecode(token); // ✅ decodificación segura
+      const decoded = jwtDecode(token);
       return decoded.role || 'usuario';
     } catch (err) {
       console.error('Token inválido o expirado:', err);
@@ -55,75 +61,80 @@ function App() {
   };
 
   return (
-    <Router>
-      <div
-        className="App"
-        style={{
-          textAlign: 'center',
-          minHeight: '100vh',
-          backgroundColor: '#f7f9fb',
-        }}
-      >
-        {/* 🔹 Navbar importado */}
-        <Navbar />
+    <Provider store={store}>
+      <Router>
+        <div
+          className="App"
+          style={{
+            textAlign: 'center',
+            minHeight: '100vh',
+            backgroundColor: '#f7f9fb',
+          }}
+        >
+          {/* 🔹 Navbar global */}
+          <Navbar />
 
-        {/* 🔹 Rutas */}
-        <Routes>
-          {/* Página de inicio */}
-          <Route
-            path="/"
-            element={
-              <h1 style={{ marginTop: '50px' }}>
-                Bienvenido a la plataforma de música 🎵
-              </h1>
-            }
-          />
+          {/* 🔹 Rutas principales */}
+          <Routes>
+            {/* Página de inicio */}
+            <Route
+              path="/"
+              element={
+                <h1 style={{ marginTop: '50px' }}>
+                  Bienvenido a la plataforma de música 🎵
+                </h1>
+              }
+            />
 
-          {/* Registro y login */}
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/login" element={<LoginForm />} />
+            {/* Registro y login */}
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/login" element={<LoginForm />} />
 
-          {/* Dashboard genérico */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={['admin', 'artista', 'usuario']}>
-                <RedirectDashboard />
-              </ProtectedRoute>
-            }
-          />
+            {/* Dashboard genérico */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['admin', 'artista', 'usuario']}>
+                  <RedirectDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Dashboards específicos */}
-          <Route
-            path="/dashboard/admin"
-            element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/artista"
-            element={
-              <ProtectedRoute allowedRoles={['artista']}>
-                <ArtistaDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/usuario"
-            element={
-              <ProtectedRoute allowedRoles={['usuario']}>
-                <UsuarioDashboard />
-              </ProtectedRoute>
-            }
-          />
+            {/* Dashboards específicos */}
+            <Route
+              path="/dashboard/admin"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Ruta por defecto */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
-    </Router>
+            <Route
+              path="/dashboard/artista"
+              element={
+                <ProtectedRoute allowedRoles={['artista']}>
+                  <ArtistaDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* ✅ Nuevo dashboard de usuario actualizado */}
+            <Route
+              path="/dashboard/usuario"
+              element={
+                <ProtectedRoute allowedRoles={['usuario']}>
+                  <DashboardUsuario />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Ruta por defecto */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </Router>
+    </Provider>
   );
 }
 

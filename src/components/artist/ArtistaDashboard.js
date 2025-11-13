@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import CompFormulario from './CompFormulario';
 import CompLista from './CompLista';
 import CompDetalle from './CompDetalle';
@@ -8,12 +9,31 @@ import './ArtistDashboard.css';
 const ArtistDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedSong, setSelectedSong] = useState(null);
+  const [songs, setSongs] = useState([]); // 🔹 Lista de canciones
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  const handleSelectSong = (song) => {
-    setSelectedSong(song);
+  const handleSelectSong = (song) => setSelectedSong(song);
+
+  // 🔹 Traer canciones del artista al cargar el dashboard
+  const fetchSongs = async () => {
+    try {
+      const res = await axios.get('http://127.0.0.1:8000/api/songs/mine', { withCredentials: true });
+      setSongs(res.data);
+    } catch (err) {
+      console.error('Error al obtener canciones:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchSongs();
+  }, []);
+
+  // 🔹 Función que se pasa a CompFormulario para refrescar lista
+  const handleSongAdded = () => {
+    handleCloseModal();
+    fetchSongs();
   };
 
   return (
@@ -29,7 +49,7 @@ const ArtistDashboard = () => {
       {/* 🔹 Cuerpo blanco */}
       <div className="dashboard-body">
         <div className="left-panel">
-          <CompLista onSelectSong={handleSelectSong} />
+          <CompLista songs={songs} onSelectSong={handleSelectSong} />
         </div>
 
         <div className="right-panel">
@@ -48,7 +68,13 @@ const ArtistDashboard = () => {
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-modal" onClick={handleCloseModal}>✖</button>
-            <CompFormulario onClose={handleCloseModal} />
+            {/* 🔹 Pasamos handleSongAdded para actualizar lista */}
+            <CompFormulario 
+              onClose={handleCloseModal} 
+              onSongAdded={(newSong) => {
+                window.dispatchEvent(new CustomEvent('songAdded', { detail: newSong }));
+             }}
+             />
           </div>
         </div>
       )}
